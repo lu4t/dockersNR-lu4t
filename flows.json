@@ -1,1 +1,159 @@
-[{"id":"d4f6dcd2.0dcb18","type":"inject","z":"1828d55b.02888b","name":"","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payload":"","payloadType":"date","x":140,"y":640,"wires":[["550bb33c.c20374"]]},{"id":"550bb33c.c20374","type":"http request","z":"1828d55b.02888b","name":"","method":"GET","ret":"obj","paytoqs":"ignore","url":"https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres","tls":"","persist":false,"proxy":"","authType":"","x":230,"y":700,"wires":[["2912945b.b941dc"]]},{"id":"df9119bf.b3fbc","type":"split","z":"1828d55b.02888b","name":"","splt":"\\n","spltType":"str","arraySplt":1,"arraySpltType":"len","stream":false,"addname":"","x":430,"y":700,"wires":[["591be0a5.30a968"]]},{"id":"2912945b.b941dc","type":"function","z":"1828d55b.02888b","name":"","func":"var men = msg.payload.ListaEESSPrecio;\nvar mensaje = {payload: men};\nreturn mensaje;","outputs":1,"noerr":0,"initialize":"","finalize":"","x":340,"y":640,"wires":[["df9119bf.b3fbc"]]},{"id":"ab431179.ff7ab","type":"delay","z":"1828d55b.02888b","name":"","pauseType":"rate","timeout":"5","timeoutUnits":"seconds","rate":"10","nbRateUnits":"1","rateUnits":"second","randomFirst":"1","randomLast":"5","randomUnits":"seconds","drop":false,"x":660,"y":700,"wires":[["c5eb31b0.2b9cf8"]]},{"id":"c5eb31b0.2b9cf8","type":"cloudantplus out","z":"1828d55b.02888b","name":"","cloudant":"47dd1972.3e8228","database":"inutil-gasolina-db","service":"node-inutil-cloudant-1605874775319-54425","payonly":true,"operation":"insert","x":790,"y":640,"wires":[[]]},{"id":"591be0a5.30a968","type":"function","z":"1828d55b.02888b","name":"DataCleaning","func":"var nm,ROTULO, GASOLINERA, MUNICIPIO, LATITUDE, LONGITUDE, PRECIO95, PRECIO98, GASOLEO, GLP;\nROTULO = msg.payload[\"Rótulo\"];\nGASOLINERA = \"'\"+ROTULO.slice(0,10).replace(/[\"']/g, \"\")+\"'\";\nMUNICIPIO = \"'\"+ msg.payload.Municipio.replace(/[\"']/g, \"\") +\"'\";\nLATITUDE = parseFloat(msg.payload.Latitud.toString().split(\",\").join(\".\"));\nLONGITUDE = parseFloat(msg.payload[\"Longitud (WGS84)\"].toString().split(\",\").join(\".\"));\nif (msg.payload[\"Precio Gasolina 95 E5\"]===\"\"){\n    PRECIO95=\"0\";\n} else\n    {\n        PRECIO95=msg.payload[\"Precio Gasolina 95 E5\"].toString().split(\",\").join(\".\");\n    }\n\nif (msg.payload[\"Precio Gasolina 98 E5\"]===\"\"){\n    PRECIO98=\"0\";\n} else\n    {\n        PRECIO98=msg.payload[\"Precio Gasolina 98 E5\"].toString().split(\",\").join(\".\");\n    }\n\nif (msg.payload[\"Precio Gasoleo A\"]===\"\")\n{\n    GASOLEO=\"0\";\n} else\n    {\n        GASOLEO=msg.payload[\"Precio Gasoleo A\"].toString().split(\",\").join(\".\");\n    }\nif (msg.payload[\"Precio Gases licuados del petróleo\"]===\"\")\n{\n    GLP=\"0\";\n} else\n    {\n        GLP=msg.payload[\"Precio Gases licuados del petróleo\"].toString().split(\",\").join(\".\");\n    }\nmsg.payload[\"clean\"] ={\n    'Gasolinera': GASOLINERA,\n    'Municipio' : MUNICIPIO,\n    'Latitude' : LATITUDE,\n    'Longitude' : LONGITUDE,\n    'Precio95' : PRECIO95,\n    'Precio98' : PRECIO98,\n    'Gasoleo' : GASOLEO,\n    'Glp' : GLP\n}\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","x":540,"y":640,"wires":[["ab431179.ff7ab"]]},{"id":"47dd1972.3e8228","type":"cloudantplus","host":"https://7261d96b-e051-473f-b488-5c7bda339d3f-bluemix.cloudantnosqldb.appdomain.cloud","name":""}]
+[
+    {
+        "id": "fff8dcc.9475aa",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "47dd1972.3e8228",
+        "type": "cloudantplus",
+        "host": "https://7261d96b-e051-473f-b488-5c7bda339d3f-bluemix.cloudantnosqldb.appdomain.cloud",
+        "name": ""
+    },
+    {
+        "id": "d4f6dcd2.0dcb18",
+        "type": "inject",
+        "z": "fff8dcc.9475aa",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 80,
+        "wires": [
+            [
+                "550bb33c.c20374"
+            ]
+        ]
+    },
+    {
+        "id": "550bb33c.c20374",
+        "type": "http request",
+        "z": "fff8dcc.9475aa",
+        "name": "",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 230,
+        "y": 140,
+        "wires": [
+            [
+                "2912945b.b941dc"
+            ]
+        ]
+    },
+    {
+        "id": "df9119bf.b3fbc",
+        "type": "split",
+        "z": "fff8dcc.9475aa",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 430,
+        "y": 140,
+        "wires": [
+            [
+                "591be0a5.30a968"
+            ]
+        ]
+    },
+    {
+        "id": "2912945b.b941dc",
+        "type": "function",
+        "z": "fff8dcc.9475aa",
+        "name": "",
+        "func": "var men = msg.payload.ListaEESSPrecio;\nvar mensaje = {payload: men};\nreturn mensaje;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 340,
+        "y": 80,
+        "wires": [
+            [
+                "df9119bf.b3fbc"
+            ]
+        ]
+    },
+    {
+        "id": "ab431179.ff7ab",
+        "type": "delay",
+        "z": "fff8dcc.9475aa",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "10",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 660,
+        "y": 140,
+        "wires": [
+            [
+                "c5eb31b0.2b9cf8"
+            ]
+        ]
+    },
+    {
+        "id": "591be0a5.30a968",
+        "type": "function",
+        "z": "fff8dcc.9475aa",
+        "name": "DataCleaning",
+        "func": "var nm,ROTULO, GASOLINERA, MUNICIPIO, LATITUDE, LONGITUDE, PRECIO95, PRECIO98, GASOLEO, GLP;\nROTULO = msg.payload[\"Rótulo\"];\nGASOLINERA = \"'\"+ROTULO.slice(0,10).replace(/[\"']/g, \"\")+\"'\";\nMUNICIPIO = \"'\"+ msg.payload.Municipio.replace(/[\"']/g, \"\") +\"'\";\nLATITUDE = parseFloat(msg.payload.Latitud.toString().split(\",\").join(\".\"));\nLONGITUDE = parseFloat(msg.payload[\"Longitud (WGS84)\"].toString().split(\",\").join(\".\"));\nif (msg.payload[\"Precio Gasolina 95 E5\"]===\"\"){\n    PRECIO95=\"0\";\n} else\n    {\n        PRECIO95=msg.payload[\"Precio Gasolina 95 E5\"].toString().split(\",\").join(\".\");\n    }\n\nif (msg.payload[\"Precio Gasolina 98 E5\"]===\"\"){\n    PRECIO98=\"0\";\n} else\n    {\n        PRECIO98=msg.payload[\"Precio Gasolina 98 E5\"].toString().split(\",\").join(\".\");\n    }\n\nif (msg.payload[\"Precio Gasoleo A\"]===\"\")\n{\n    GASOLEO=\"0\";\n} else\n    {\n        GASOLEO=msg.payload[\"Precio Gasoleo A\"].toString().split(\",\").join(\".\");\n    }\nif (msg.payload[\"Precio Gases licuados del petróleo\"]===\"\")\n{\n    GLP=\"0\";\n} else\n    {\n        GLP=msg.payload[\"Precio Gases licuados del petróleo\"].toString().split(\",\").join(\".\");\n    }\nmsg.payload[\"clean\"] ={\n    'Gasolinera': GASOLINERA,\n    'Municipio' : MUNICIPIO,\n    'Latitude' : LATITUDE,\n    'Longitude' : LONGITUDE,\n    'Precio95' : PRECIO95,\n    'Precio98' : PRECIO98,\n    'Gasoleo' : GASOLEO,\n    'Glp' : GLP\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 540,
+        "y": 80,
+        "wires": [
+            [
+                "ab431179.ff7ab"
+            ]
+        ]
+    },
+    {
+        "id": "c5eb31b0.2b9cf8",
+        "type": "cloudantplus out",
+        "z": "fff8dcc.9475aa",
+        "name": "",
+        "cloudant": "47dd1972.3e8228",
+        "database": "inutil-gasolina-db",
+        "service": "node-inutil-cloudant-1605874775319-54425",
+        "payonly": true,
+        "operation": "insert",
+        "x": 790,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    }
+]

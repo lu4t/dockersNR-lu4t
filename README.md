@@ -2,6 +2,14 @@
 
 Plantilla de projecto para correr una app node-red en un docker.
 
+Para hacer un bundle de una app Node-RED completa se necesita: 
+
+1. application flow 
+2. credential file
+3. package.json file, que tienen los nodos que Node.js y Node-RED necesitan para los flows
+4. los source files del runtime Node-RED
+
+
 The code in this repository is to provide a starting project for Node-RED, where the aim is to run in a production, cloud based environment.  There have been a few modifications over the standard Node-RED released code.
 
 ## Como se usa:

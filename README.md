@@ -11,9 +11,9 @@ The code in this repository is to provide a starting project for Node-RED, where
 3. hago lo mismo, con el fichero flows_cred.json 
 4. en el fichero package.json, si estamos usando nodos que no vengan en el NR estandard, actualizamos la lista de dependencias y los incluímos; los módulos que vayan a ser necesarios en los flujos que estan en flows.json anterior.
 5. el fichero settings.js incluido en este repo, tiene modificado el original, para activar la opcion NR de "proyectos", que hace aparecer una pestaña de integración con github. Si lo editamos, podemos ver cómo se activa esta opción en una instalación NR normal):
-    projects: {
-    // To enable the Projects feature, set this value to true
-       enabled: true
+        projects: {
+        // To enable the Projects feature, set this value to true
+        enabled: true
 6. cuando la app NR funcione, y esté lista para construirse una imagen, se usa el Dockerfile que está incluido en este repo para hacer build de la app.
 
 tutorials [here](https://github.com/binnes/Node-RED-container-prod)

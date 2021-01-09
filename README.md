@@ -50,7 +50,13 @@ los tutoriales de donde sale este paso a paso están: [aquí](https://github.com
          docker login
          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t lu4t/nr-docker-sample-lu4t --push .
          
-13. cuando se halla completado el build, aparecerá la imagen de un container en el repo de docker, bajo mi cuenta.
+13. cuando se halla completado el build, aparecerá la imagen de un container en el repo de docker, bajo mi cuenta de docker.
+
+14. para descargar y probar el docker que acabo de crear, verifico que no está corriendo en local ningún otro NR, y ejecuto:
+
+        docker run -dit -p 1880:1880 --name mi-primer-docker lu4t/nr-docker-sample-lu4t:latest
+        
+        
          
         
 

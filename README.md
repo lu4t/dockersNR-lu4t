@@ -14,7 +14,9 @@ The code in this repository is to provide a starting project for Node-RED, where
 
 ## Como se usa:
 
-1. using a standard install of Node-RED with the [projects](https://nodered.org/docs/user-guide/projects/) feature enabled, clone a fork of this repository
+los tutoriales de donde sale este paso a paso están: [aquí](https://github.com/binnes/Node-RED-container-prod)
+
+1. hacer un clone de este repo. Y tendremos un docker con imagen limpia de NR --> a standard install of Node-RED with the [projects](https://nodered.org/docs/user-guide/projects/) feature enabled.
 2. sustituir el fichero flows.json en este repo, por un fichero flows.json que incluye los flujos que quiero meter en mi imagen de docker de la app NR. 
 3. hago lo mismo, con el fichero flows_cred.json 
 4. en el fichero package.json, si estamos usando nodos que no vengan en el NR estandard, actualizamos la lista de dependencias y los incluímos; los módulos que vayan a ser necesarios en los flujos que estan en flows.json anterior.
@@ -23,9 +25,34 @@ The code in this repository is to provide a starting project for Node-RED, where
         projects: {
         // To enable the Projects feature, set this value to true
         enabled: true
-6. cuando la app NR funcione, y esté lista para construirse una imagen, se usa el Dockerfile que está incluido en este repo para hacer build de la app.
+6. cuando la app NR funcione, y esté lista para construirse una imagen, se usa el Dockerfile que está incluido en este repo para hacer build de la app. La funcion que hace el Dockerfile es "descubrir" todas las dependencias que tiene mi app y que no están declaradas en NR, sino que son dependencias del runtime que usa NR (que se llama Node.js) y que son en realidad cosas que el docker "espera" que estén en el SO del host en el que corre.
+7. arrancamos un docker NR que tire del repo:
 
-tutorials [aquí](https://github.com/binnes/Node-RED-container-prod)
+        docker run -itd -p 1880:1880 -v /home/lu4t/repos-github/NRdata:/data -e NODE_RED_ENABLE_PROJECTS=true -e TZ=Europe/Madrid --name lu4tNR nodered/node-red
+
+8. con el NR corriendo, verificamos que tiene el flujo que queremos "empaquetar" en la app dockerizada. Abrimos http://localhost:1880 y comprobamos.
+9. activamos la funcion buildx de docker, y activamos la opción de emulador de arquitecturas (permite hacer build de un docker multi-arquitectura).
+        
+        export DOCKER_CLI_EXPERIMENTAL=enabled
+        
+        docker run --rm --privileged docker/binfmt:66f9012c56a8316f9244ffd7622d7c21c1f6f28d
+        
+10. Desde el mismo directorio donde esté el Dockerfile, creamos un nuevo builder:
+        
+        docker buildx create --name NRbuilder --use
+ 
+11. Arrancamos el proceso de build:
+
+        docker buildx inspect --bootstrap
+        
+12. nos logueamos en docker (o el repositorio de imagenes que vamos a usar), y arrancamos el proceso de build y luego le hacemos un push a dockerhub:
+
+         docker login
+         docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t lu4t/nr-docker-sample-lu4t --push .
+         
+13. cuando se halla completado el build, aparecerá la imagen de un container en el repo de docker, bajo mi cuenta.
+         
+        
 
 ## Changes from a standard Node-RED install
 

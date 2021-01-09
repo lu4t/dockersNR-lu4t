@@ -10,7 +10,7 @@
         "id": "47dd1972.3e8228",
         "type": "cloudantplus",
         "host": "https://7261d96b-e051-473f-b488-5c7bda339d3f-bluemix.cloudantnosqldb.appdomain.cloud",
-        "name": ""
+        "name": "cloudant cf ibmcloud"
     },
     {
         "id": "d4f6dcd2.0dcb18",
@@ -144,13 +144,13 @@
         "id": "c5eb31b0.2b9cf8",
         "type": "cloudantplus out",
         "z": "fff8dcc.9475aa",
-        "name": "",
+        "name": "cloudant-cf-ibmcloud",
         "cloudant": "47dd1972.3e8228",
         "database": "inutil-gasolina-db",
-        "service": "node-inutil-cloudant-1605874775319-54425",
+        "service": "_ext_",
         "payonly": true,
         "operation": "insert",
-        "x": 790,
+        "x": 800,
         "y": 80,
         "wires": [
             []

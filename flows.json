@@ -1,1 +1,1766 @@
-[{"id":"3af82246.3634ae","type":"tab","label":"Flow 1","disabled":false,"info":""}]
+[
+    {
+        "id": "87b89ada.268e58",
+        "type": "tab",
+        "label": "gasolineras",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "e9dfad7c.fbdfd",
+        "type": "tab",
+        "label": "FranceBots",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "2d4b2613.e422f2",
+        "type": "tab",
+        "label": "RequestsDB",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "47dd1972.3e8228",
+        "type": "cloudantplus",
+        "z": "",
+        "host": "https://a980b9f5-7520-482e-8a01-5f41cef84981-bluemix:b377fb803ba7c7c67536713b9deb0538d56d570ba553ca38ac1331e61bfe1992@a980b9f5-7520-482e-8a01-5f41cef84981-bluemix.cloudantnosqldb.appdomain.cloud",
+        "name": ""
+    },
+    {
+        "id": "8fec3c31.40397",
+        "type": "sqlitedb",
+        "db": "/data/gasolineras",
+        "mode": "RWC"
+    },
+    {
+        "id": "2c474e71.75ec22",
+        "type": "telegram bot",
+        "z": "",
+        "botname": "dieselfrBot",
+        "usernames": "",
+        "chatids": "",
+        "baseapiurl": "",
+        "updatemode": "polling",
+        "pollinterval": "300",
+        "usesocks": false,
+        "sockshost": "",
+        "socksport": "6667",
+        "socksusername": "anonymous",
+        "sockspassword": "",
+        "bothost": "169.57.42.26",
+        "botpath": "",
+        "localbotport": "8443",
+        "publicbotport": "30612",
+        "privatekey": "",
+        "certificate": "",
+        "useselfsignedcertificate": false,
+        "sslterminated": true,
+        "verboselogging": false
+    },
+    {
+        "id": "815b6bb4.0de7d8",
+        "type": "telegram bot",
+        "z": "",
+        "botname": "lessencebot",
+        "usernames": "",
+        "chatids": "",
+        "baseapiurl": "",
+        "updatemode": "polling",
+        "pollinterval": "300",
+        "usesocks": false,
+        "sockshost": "",
+        "socksport": "6667",
+        "socksusername": "anonymous",
+        "sockspassword": "",
+        "bothost": "",
+        "botpath": "",
+        "localbotport": "8443",
+        "publicbotport": "8443",
+        "privatekey": "",
+        "certificate": "",
+        "useselfsignedcertificate": false,
+        "sslterminated": false,
+        "verboselogging": false
+    },
+    {
+        "id": "16ea05b2.bf6842",
+        "type": "link in",
+        "z": "2d4b2613.e422f2",
+        "name": "responses",
+        "links": [
+            "31196289.a46606",
+            "37e074aa.8c5dcc",
+            "7028557b.cac914",
+            "712d6032.538c4",
+            "7ac3d8ee.2b3728",
+            "2880003e.0bf62",
+            "b6ecc533.18e47"
+        ],
+        "x": 125,
+        "y": 200,
+        "wires": [
+            [
+                "4b53b433.f8920c"
+            ]
+        ]
+    },
+    {
+        "id": "7d38dbdf.c8bca4",
+        "type": "cloudantplus out",
+        "z": "2d4b2613.e422f2",
+        "name": "",
+        "cloudant": "47dd1972.3e8228",
+        "database": "responses",
+        "service": "_ext_",
+        "payonly": false,
+        "operation": "insert",
+        "x": 410,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4b53b433.f8920c",
+        "type": "function",
+        "z": "2d4b2613.e422f2",
+        "name": "",
+        "func": "var fecha = new Date();\n\nmsg.payload['fecha'] = fecha;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 250,
+        "y": 200,
+        "wires": [
+            [
+                "7d38dbdf.c8bca4"
+            ]
+        ]
+    },
+    {
+        "id": "6b3f4c72.6e4d04",
+        "type": "cloudantplus out",
+        "z": "2d4b2613.e422f2",
+        "name": "requests",
+        "cloudant": "47dd1972.3e8228",
+        "database": "requests",
+        "service": "_ext_",
+        "payonly": true,
+        "operation": "insert",
+        "x": 420,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b41c301e.7fcd58",
+        "type": "function",
+        "z": "2d4b2613.e422f2",
+        "name": "",
+        "func": "var fecha = new Date();\nvar hoy = fecha.getFullYear()*10000 + fecha.getMonth()*100 + fecha.getDate();\nvar hora = fecha.getHours()*60 + fecha.getMinutes();\nmsg.payload = {\n    'fecha': hoy,\n    'hora': hora,\n    'chatId': msg.payload.chatId,\n    'longitude': msg.payload.content.longitude,\n    'latitude': msg.payload.content.latitude,\n    'nombre': msg.originalMessage.chat.first_name,\n    'apellido': msg.originalMessage.chat.last_name\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 250,
+        "y": 260,
+        "wires": [
+            [
+                "6b3f4c72.6e4d04"
+            ]
+        ]
+    },
+    {
+        "id": "c7776396.09ff6",
+        "type": "link in",
+        "z": "2d4b2613.e422f2",
+        "name": "requests",
+        "links": [
+            "a1a8b92c.9a02d",
+            "dc0dfdac.ae3878",
+            "540cc88f.06f558",
+            "af4ed20.1471b3",
+            "c90c564.21fcf28",
+            "4ea25744.f2d7",
+            "dc7fbedd.74a2d"
+        ],
+        "x": 125,
+        "y": 260,
+        "wires": [
+            [
+                "b41c301e.7fcd58"
+            ]
+        ]
+    },
+    {
+        "id": "5d6da6a.6fa8358",
+        "type": "link in",
+        "z": "2d4b2613.e422f2",
+        "name": "tweet",
+        "links": [
+            "4e73dd93.18bfbc",
+            "a0b1a496.116148",
+            "8fc079fd.37e918",
+            "77d6b295.3e9494",
+            "d2e71684.77eb28"
+        ],
+        "x": 125,
+        "y": 340,
+        "wires": [
+            [
+                "f6497b9c.e99de"
+            ]
+        ]
+    },
+    {
+        "id": "f6497b9c.e99de",
+        "type": "function",
+        "z": "2d4b2613.e422f2",
+        "name": "",
+        "func": "var gas = \"la gasolinera más barata es \"+msg.payload[0].GASOLINERA+\" en \"+ msg.payload[0].MUNICIPIO;\nvar ahorro =\". Gracias a una diferencia del \"+msg.dif+\"%,\"+\" nuestro usuario va a ahorrarse \"+msg.dif2+\"€ en este repostaje.\"\nvar enlace=\"http://maps.google.com/maps?q=\"+msg.payload[0].LATITUDE+\",\"+msg.payload[0].LONGITUDE;\nmsg.payload=\"En nuestra última consulta, \"+gas+ahorro+\" La gasolinera está en: \"+enlace;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 250,
+        "y": 340,
+        "wires": [
+            [
+                "db9b9b20.c2149"
+            ]
+        ]
+    },
+    {
+        "id": "db9b9b20.c2149",
+        "type": "twitter out",
+        "z": "2d4b2613.e422f2",
+        "twitter": "",
+        "name": "Tweet",
+        "x": 410,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "5c0e051f.1a8e6c",
+        "type": "function",
+        "z": "e9dfad7c.fbdfd",
+        "name": "BotSend",
+        "func": "var nombre=msg.originalMessage.chat.first_name;\nmsg.payload = {\n    'content' : \"Bonjour \"+nombre+\". Si vous souhaitez recevoir des instructions sur la façon d'utiliser ce service, écrivez «help». Sinon, envoyez-moi votre localisation afin que je puisse vous aider à choisir où faire le plein au meilleur prix.\",\n    'type' : \"message\",\n    'chatId': msg.payload.chatId} \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 620,
+        "y": 440,
+        "wires": [
+            [
+                "1336c872.6c97f8"
+            ]
+        ]
+    },
+    {
+        "id": "49ac08ba.9e2fe8",
+        "type": "switch",
+        "z": "e9dfad7c.fbdfd",
+        "name": "TipoMsje",
+        "property": "payload.type",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "location",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 180,
+        "y": 340,
+        "wires": [
+            [
+                "c163e68e.277288",
+                "4ea25744.f2d7"
+            ],
+            [
+                "ff614bca.f10478"
+            ]
+        ]
+    },
+    {
+        "id": "53b57c8c.db4254",
+        "type": "function",
+        "z": "e9dfad7c.fbdfd",
+        "name": "PrepareTelegramMSG",
+        "func": "// var enlace = \"[Ubicación](http://maps.google.com/maps?q=\"+msg.payload.LATITUDE+\",\"+msg.payload.LONGITUDE+\")\";\nvar tm = { payload: \n    {\n    content: msg.payload,\n    type:\"message\",\n    chatId: flow.get('chatId'),\n    options: {\n        parse_mode : \"Markdown\",\n        disable_web_page_preview : 'true'},\n    }\n}\nreturn tm;\n\n// http://maps.google.com/maps?q=24.197611,120.780512\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 1140,
+        "y": 280,
+        "wires": [
+            [
+                "1336c872.6c97f8",
+                "2880003e.0bf62"
+            ]
+        ]
+    },
+    {
+        "id": "ff614bca.f10478",
+        "type": "switch",
+        "z": "e9dfad7c.fbdfd",
+        "name": "",
+        "property": "payload.content",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "Help",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "help",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "HELP",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 4,
+        "x": 330,
+        "y": 420,
+        "wires": [
+            [
+                "78f685a8.ccd2ec"
+            ],
+            [
+                "78f685a8.ccd2ec"
+            ],
+            [
+                "78f685a8.ccd2ec"
+            ],
+            [
+                "5c0e051f.1a8e6c"
+            ]
+        ]
+    },
+    {
+        "id": "78f685a8.ccd2ec",
+        "type": "function",
+        "z": "e9dfad7c.fbdfd",
+        "name": "BotSend",
+        "func": "var nombre=msg.originalMessage.chat.first_name;\nmsg.payload = {\n    'content' : \"Voyons voir, \"+nombre+\". Cela semble-t-il vraiment difficile? Envoyez votre position avec un message de type carte. Aussi simple que cela.\",\n    'type' : \"message\",\n    'chatId': msg.payload.chatId} \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 620,
+        "y": 400,
+        "wires": [
+            [
+                "1336c872.6c97f8"
+            ]
+        ]
+    },
+    {
+        "id": "c163e68e.277288",
+        "type": "function",
+        "z": "e9dfad7c.fbdfd",
+        "name": "query",
+        "func": "var lat = msg.payload.content.latitude;\nvar long = msg.payload.content.longitude;\nvar longmin=0;\nvar longmax=0;\nvar latmin = lat - 0.9;\nvar latmax = lat + 0.9;\nif (long > 0){\n    longmin = long - 0.9;\n    longmax = long + 0.9;\n    msg.topic=\"SELECT * FROM gasolineras WHERE LONGITUDE BETWEEN \"+longmin+\" AND \"+longmax+\" AND LATITUDE BETWEEN \"+latmin+\" AND \"+latmax+ \" ORDER BY GASOLEO ASC\";\n}\nelse {\n    longmin = long + 0.9;\n    longmax = long - 0.9;\n    msg.topic=\"SELECT * FROM gasolineras WHERE LONGITUDE BETWEEN \"+longmax+\" AND \"+longmin+\" AND LATITUDE BETWEEN \"+latmin+\" AND \"+latmax+\" ORDER BY GASOLEO ASC\";\n}\nflow.set('coordinates',msg.payload.content);\nflow.set('chatId',msg.payload.chatId);\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 330,
+        "y": 280,
+        "wires": [
+            [
+                "58d89e74.a0e18",
+                "dbd831c2.95a27"
+            ]
+        ]
+    },
+    {
+        "id": "13557b56.6d3395",
+        "type": "template",
+        "z": "e9dfad7c.fbdfd",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "Stations d'essence à proximité:\n{{#payload}}\n[- {{MUNICIPIO}}](http://maps.google.com/maps?q={{LATITUDE}},{{LONGITUDE}}) ({{DISTANCIA}}Km) Diesel: {{GASOLEO}} €\n{{/payload}}\n--------------------\nLes 10 plus proches sont affichés, classés par prix par litre de diesel.\nGardez à l'esprit que, entre le plus cher et le moins cher, il y a une différence de {{dif}}%.\nVous pouvez économiser {{dif2}} € sur le ravitaillement d'un réservoir de 50 litres.",
+        "output": "str",
+        "x": 760,
+        "y": 280,
+        "wires": [
+            [
+                "53b57c8c.db4254"
+            ]
+        ]
+    },
+    {
+        "id": "8f769643.29e238",
+        "type": "split",
+        "z": "e9dfad7c.fbdfd",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 450,
+        "y": 200,
+        "wires": [
+            [
+                "fca64208.b8183"
+            ]
+        ]
+    },
+    {
+        "id": "fca64208.b8183",
+        "type": "function",
+        "z": "e9dfad7c.fbdfd",
+        "name": "AddDistance",
+        "func": "const asin = Math.asin\nconst cos = Math.cos\nconst sin = Math.sin\nconst sqrt = Math.sqrt\nconst PI = Math.PI\n//var nm = msg;\nconst R = 6378137\nfunction squared (x) { return x * x }\nfunction toRad (x) { return x * PI / 180.0 }\nvar p1 = {\n    Latitud : flow.get('coordinates').latitude,\n    Longitud: flow.get('coordinates').longitude\n}\nvar p2 = {\n    Latitud: msg.payload.LATITUDE,\n    Longitud: msg.payload.LONGITUDE\n}\n\nfunction hav (x) {\n  return squared(sin(x / 2))\n}\n\n// Formula de Haversine\nfunction haversineDistance (a, b) {\n  const aLat = toRad(Array.isArray(a) ? a[1] : a.Latitud || a.lat)\n  const bLat = toRad(Array.isArray(b) ? b[1] : b.Latitud || b.lat)\n  const aLng = toRad(Array.isArray(a) ? a[0] : a.Longitud || a.lng || a.lon)\n  const bLng = toRad(Array.isArray(b) ? b[0] : b.Longitud || b.lng || b.lon)\n  const ht = hav(bLat - aLat) + cos(aLat) * cos(bLat) * hav(bLng - aLng)\n  return 2 * R * asin(sqrt(ht))\n}\nvar distancia = haversineDistance (p1,p2)/1000;\nmsg.payload.DISTANCIA = Math.round(distancia * 100) / 100;\nreturn msg;\n//nm.payload.DISTANCIA = Math.round(distancia * 100) / 100;\n//return nm;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 590,
+        "y": 200,
+        "wires": [
+            [
+                "9d8231dd.08365"
+            ]
+        ]
+    },
+    {
+        "id": "9d8231dd.08365",
+        "type": "join",
+        "z": "e9dfad7c.fbdfd",
+        "name": "",
+        "mode": "auto",
+        "build": "string",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": "false",
+        "timeout": "",
+        "count": "",
+        "reduceRight": false,
+        "x": 750,
+        "y": 180,
+        "wires": [
+            [
+                "95f7bc8a.19fb6"
+            ]
+        ]
+    },
+    {
+        "id": "58d89e74.a0e18",
+        "type": "sqlite",
+        "z": "e9dfad7c.fbdfd",
+        "mydb": "8fec3c31.40397",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "gasolineras",
+        "x": 550,
+        "y": 280,
+        "wires": [
+            [
+                "8f769643.29e238"
+            ]
+        ]
+    },
+    {
+        "id": "95f7bc8a.19fb6",
+        "type": "change",
+        "z": "e9dfad7c.fbdfd",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload^(DISTANCIA)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 900,
+        "y": 100,
+        "wires": [
+            [
+                "fdb08672.802e88"
+            ]
+        ]
+    },
+    {
+        "id": "fdb08672.802e88",
+        "type": "function",
+        "z": "e9dfad7c.fbdfd",
+        "name": "RecortaARRAY",
+        "func": "msg.payload = msg.payload.slice(0,10);\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 1040,
+        "y": 160,
+        "wires": [
+            [
+                "94f4f1f9.d3094"
+            ]
+        ]
+    },
+    {
+        "id": "94f4f1f9.d3094",
+        "type": "change",
+        "z": "e9dfad7c.fbdfd",
+        "name": "ordena precios",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload^(GASOLEO)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 920,
+        "y": 220,
+        "wires": [
+            [
+                "3a180ea7.7e8342"
+            ]
+        ]
+    },
+    {
+        "id": "3a180ea7.7e8342",
+        "type": "change",
+        "z": "e9dfad7c.fbdfd",
+        "name": "Diferencia",
+        "rules": [
+            {
+                "t": "set",
+                "p": "dif",
+                "pt": "msg",
+                "to": "$round((100*(payload[9].GASOLEO - payload[0].GASOLEO)/payload[9].GASOLEO), 1)",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "dif2",
+                "pt": "msg",
+                "to": "$round(50*(payload[9].GASOLEO - payload[0].GASOLEO),2)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1120,
+        "y": 220,
+        "wires": [
+            [
+                "13557b56.6d3395",
+                "77d6b295.3e9494"
+            ]
+        ]
+    },
+    {
+        "id": "d0f411b6.8eba6",
+        "type": "telegram receiver",
+        "z": "e9dfad7c.fbdfd",
+        "name": "",
+        "bot": "2c474e71.75ec22",
+        "saveDataDir": "",
+        "filterCommands": false,
+        "x": 120,
+        "y": 240,
+        "wires": [
+            [
+                "49ac08ba.9e2fe8"
+            ],
+            [
+                "49ac08ba.9e2fe8"
+            ]
+        ]
+    },
+    {
+        "id": "1336c872.6c97f8",
+        "type": "telegram sender",
+        "z": "e9dfad7c.fbdfd",
+        "name": "",
+        "bot": "2c474e71.75ec22",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 960,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fcc72905.ec2218",
+        "type": "http request",
+        "z": "e9dfad7c.fbdfd",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": false,
+        "url": "",
+        "persist": false,
+        "authType": "",
+        "x": 470,
+        "y": 520,
+        "wires": [
+            [
+                "748f0527.039cdc"
+            ]
+        ]
+    },
+    {
+        "id": "dbd831c2.95a27",
+        "type": "function",
+        "z": "e9dfad7c.fbdfd",
+        "name": "",
+        "func": "var lat = msg.payload.content.latitude;\nvar lon = msg.payload.content.longitude;\nmsg.url=\"https://nominatim.openstreetmap.org/reverse?lat=\"+lat+\"&lon=\"+lon;\nmsg.headers = {};\nmsg.headers['USER-AGENT'] = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36';\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 300,
+        "y": 520,
+        "wires": [
+            [
+                "fcc72905.ec2218"
+            ]
+        ]
+    },
+    {
+        "id": "e0f7ccf2.f81af",
+        "type": "debug",
+        "z": "e9dfad7c.fbdfd",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1030,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "748f0527.039cdc",
+        "type": "xml",
+        "z": "e9dfad7c.fbdfd",
+        "name": "",
+        "property": "payload",
+        "attr": "",
+        "chr": "",
+        "x": 630,
+        "y": 520,
+        "wires": [
+            [
+                "d8f1ec4e.5c8e3"
+            ]
+        ]
+    },
+    {
+        "id": "d8f1ec4e.5c8e3",
+        "type": "function",
+        "z": "e9dfad7c.fbdfd",
+        "name": "",
+        "func": "msg.payload = msg.payload.reversegeocode.addressparts[0].country_code[0];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 790,
+        "y": 520,
+        "wires": [
+            [
+                "e0f7ccf2.f81af"
+            ]
+        ]
+    },
+    {
+        "id": "ebda963a.658ce",
+        "type": "function",
+        "z": "e9dfad7c.fbdfd",
+        "name": "BotSend",
+        "func": "var nombre=msg.originalMessage.chat.first_name;\nmsg.payload = {\n    'content' : \"Bonjour \"+nombre+\". Si vous souhaitez recevoir des instructions sur la façon d'utiliser ce service, écrivez «help». Sinon, envoyez-moi votre localisation afin que je puisse vous aider à choisir où faire le plein au meilleur prix.\",\n    'type' : \"message\",\n    'chatId': msg.payload.chatId} \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 580,
+        "y": 920,
+        "wires": [
+            [
+                "3beb49f5.fdeb2e"
+            ]
+        ]
+    },
+    {
+        "id": "a27192dd.7979a",
+        "type": "switch",
+        "z": "e9dfad7c.fbdfd",
+        "name": "TipoMsje",
+        "property": "payload.type",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "location",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 160,
+        "y": 760,
+        "wires": [
+            [
+                "cf1ce779.148b4",
+                "dc7fbedd.74a2d"
+            ],
+            [
+                "5108c388.c232ec"
+            ]
+        ]
+    },
+    {
+        "id": "3bdf5426.cbf014",
+        "type": "function",
+        "z": "e9dfad7c.fbdfd",
+        "name": "PrepareTelegramMSG",
+        "func": "// var enlace = \"[Ubicación](http://maps.google.com/maps?q=\"+msg.payload.LATITUDE+\",\"+msg.payload.LONGITUDE+\")\";\nvar tm = { payload: \n    {\n    content: msg.payload,\n    type:\"message\",\n    chatId: flow.get('chatId'),\n    options: {\n        parse_mode : \"Markdown\",\n        disable_web_page_preview : 'true'},\n    }\n}\nreturn tm;\n\n// http://maps.google.com/maps?q=24.197611,120.780512\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 1340,
+        "y": 800,
+        "wires": [
+            [
+                "3beb49f5.fdeb2e",
+                "b6ecc533.18e47"
+            ]
+        ]
+    },
+    {
+        "id": "5108c388.c232ec",
+        "type": "switch",
+        "z": "e9dfad7c.fbdfd",
+        "name": "",
+        "property": "payload.content",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "Help",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "help",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "HELP",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 4,
+        "x": 310,
+        "y": 900,
+        "wires": [
+            [
+                "60856ac.90fd614"
+            ],
+            [
+                "60856ac.90fd614"
+            ],
+            [
+                "60856ac.90fd614"
+            ],
+            [
+                "ebda963a.658ce"
+            ]
+        ]
+    },
+    {
+        "id": "60856ac.90fd614",
+        "type": "function",
+        "z": "e9dfad7c.fbdfd",
+        "name": "BotSend",
+        "func": "var nombre=msg.originalMessage.chat.first_name;\nmsg.payload = {\n    'content' : \"Voyons voir, \"+nombre+\". Cela semble-t-il vraiment difficile? Envoyez votre position avec un message de type carte. Aussi simple que cela.\",\n    'type' : \"message\",\n    'chatId': msg.payload.chatId} \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 580,
+        "y": 880,
+        "wires": [
+            [
+                "3beb49f5.fdeb2e"
+            ]
+        ]
+    },
+    {
+        "id": "f19e86d3.22d91",
+        "type": "function",
+        "z": "e9dfad7c.fbdfd",
+        "name": "query",
+        "func": "var lat = msg.payload.content.latitude;\nvar long = msg.payload.content.longitude;\nvar longmin=0;\nvar longmax=0;\nvar latmin = lat - 0.9;\nvar latmax = lat + 0.9;\nif (long > 0){\n    longmin = long - 0.9;\n    longmax = long + 0.9;\n    msg.topic=\"SELECT * FROM gasolineras WHERE LONGITUDE BETWEEN \"+longmin+\" AND \"+longmax+\" AND LATITUDE BETWEEN \"+latmin+\" AND \"+latmax+ \" ORDER BY PRECIO95 ASC\";\n}\nelse {\n    longmin = long + 0.9;\n    longmax = long - 0.9;\n    msg.topic=\"SELECT * FROM gasolineras WHERE LONGITUDE BETWEEN \"+longmax+\" AND \"+longmin+\" AND LATITUDE BETWEEN \"+latmin+\" AND \"+latmax+\" ORDER BY PRECIO95 ASC\";\n}\nflow.set('coordinates',msg.payload.content);\nflow.set('chatId',msg.payload.chatId);\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 310,
+        "y": 740,
+        "wires": [
+            [
+                "162e3983.35d91e"
+            ]
+        ]
+    },
+    {
+        "id": "7038a25a.0716bc",
+        "type": "template",
+        "z": "e9dfad7c.fbdfd",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "stations-service à proximité:\n{{#payload}}\n[- {{MUNICIPIO}}](http://maps.google.com/maps?q={{LATITUDE}},{{LONGITUDE}}) ({{DISTANCIA}}Km)\nG95: {{PRECIO95}} € - G98: {{PRECIO98}} €\n{{/payload}}\n--------------------\nLes 10 plus proches sont affichés, classés par prix par litre de Gas95.\nGardez à l'esprit que, entre le plus cher et le moins cher, il y a une différence de {{dif}}%.\nVous pouvez économiser {{dif2}} € sur le ravitaillement d'un réservoir de 50 litres.",
+        "output": "str",
+        "x": 1160,
+        "y": 680,
+        "wires": [
+            [
+                "3bdf5426.cbf014"
+            ]
+        ]
+    },
+    {
+        "id": "162e3983.35d91e",
+        "type": "sqlite",
+        "z": "e9dfad7c.fbdfd",
+        "mydb": "8fec3c31.40397",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "gasolineras",
+        "x": 470,
+        "y": 680,
+        "wires": [
+            [
+                "261b82f3.be0cd6"
+            ]
+        ]
+    },
+    {
+        "id": "4b591f75.44ff98",
+        "type": "telegram receiver",
+        "z": "e9dfad7c.fbdfd",
+        "name": "lessencebot",
+        "bot": "815b6bb4.0de7d8",
+        "saveDataDir": "",
+        "filterCommands": false,
+        "x": 130,
+        "y": 680,
+        "wires": [
+            [
+                "a27192dd.7979a"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "3beb49f5.fdeb2e",
+        "type": "telegram sender",
+        "z": "e9dfad7c.fbdfd",
+        "name": "lessencebot",
+        "bot": "815b6bb4.0de7d8",
+        "outputs": 1,
+        "x": 1330,
+        "y": 900,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "261b82f3.be0cd6",
+        "type": "split",
+        "z": "e9dfad7c.fbdfd",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 530,
+        "y": 760,
+        "wires": [
+            [
+                "ee0793a9.90909"
+            ]
+        ]
+    },
+    {
+        "id": "ee0793a9.90909",
+        "type": "function",
+        "z": "e9dfad7c.fbdfd",
+        "name": "AddDistance",
+        "func": "const asin = Math.asin\nconst cos = Math.cos\nconst sin = Math.sin\nconst sqrt = Math.sqrt\nconst PI = Math.PI\n//var nm = msg;\nconst R = 6378137\nfunction squared (x) { return x * x }\nfunction toRad (x) { return x * PI / 180.0 }\nvar p1 = {\n    Latitud : flow.get('coordinates').latitude,\n    Longitud: flow.get('coordinates').longitude\n}\nvar p2 = {\n    Latitud: msg.payload.LATITUDE,\n    Longitud: msg.payload.LONGITUDE\n}\n\nfunction hav (x) {\n  return squared(sin(x / 2))\n}\n\n// Formula de Haversine\nfunction haversineDistance (a, b) {\n  const aLat = toRad(Array.isArray(a) ? a[1] : a.Latitud || a.lat)\n  const bLat = toRad(Array.isArray(b) ? b[1] : b.Latitud || b.lat)\n  const aLng = toRad(Array.isArray(a) ? a[0] : a.Longitud || a.lng || a.lon)\n  const bLng = toRad(Array.isArray(b) ? b[0] : b.Longitud || b.lng || b.lon)\n  const ht = hav(bLat - aLat) + cos(aLat) * cos(bLat) * hav(bLng - aLng)\n  return 2 * R * asin(sqrt(ht))\n}\nvar distancia = haversineDistance (p1,p2)/1000;\nmsg.payload.DISTANCIA = Math.round(distancia * 100) / 100;\nreturn msg;\n//nm.payload.DISTANCIA = Math.round(distancia * 100) / 100;\n//return nm;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 630,
+        "y": 680,
+        "wires": [
+            [
+                "3d6d81fe.96af96"
+            ]
+        ]
+    },
+    {
+        "id": "3d6d81fe.96af96",
+        "type": "join",
+        "z": "e9dfad7c.fbdfd",
+        "name": "",
+        "mode": "auto",
+        "build": "string",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": "false",
+        "timeout": "",
+        "count": "",
+        "reduceRight": false,
+        "x": 710,
+        "y": 760,
+        "wires": [
+            [
+                "1cfde2c1.5e00bd"
+            ]
+        ]
+    },
+    {
+        "id": "1cfde2c1.5e00bd",
+        "type": "change",
+        "z": "e9dfad7c.fbdfd",
+        "name": "ordena distancia",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload^(DISTANCIA)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 850,
+        "y": 680,
+        "wires": [
+            [
+                "beb20663.ed7968"
+            ]
+        ]
+    },
+    {
+        "id": "beb20663.ed7968",
+        "type": "function",
+        "z": "e9dfad7c.fbdfd",
+        "name": "RecortaARRAY",
+        "func": "msg.payload = msg.payload.slice(0,10);\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 900,
+        "y": 760,
+        "wires": [
+            [
+                "28f7941e.2e7aac"
+            ]
+        ]
+    },
+    {
+        "id": "28f7941e.2e7aac",
+        "type": "change",
+        "z": "e9dfad7c.fbdfd",
+        "name": "ordena precios",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload^(GAS95)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1020,
+        "y": 820,
+        "wires": [
+            [
+                "bb76e334.09caa"
+            ]
+        ]
+    },
+    {
+        "id": "bb76e334.09caa",
+        "type": "change",
+        "z": "e9dfad7c.fbdfd",
+        "name": "Diferencia",
+        "rules": [
+            {
+                "t": "set",
+                "p": "dif",
+                "pt": "msg",
+                "to": "$round((100*(payload[9].PRECIO95 - payload[0].PRECIO95)/payload[9].PRECIO95), 1)",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "dif2",
+                "pt": "msg",
+                "to": "$round(50*(payload[9].PRECIO95 - payload[0].PRECIO95),2)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1100,
+        "y": 740,
+        "wires": [
+            [
+                "7038a25a.0716bc",
+                "d2e71684.77eb28"
+            ]
+        ]
+    },
+    {
+        "id": "cf1ce779.148b4",
+        "type": "function",
+        "z": "e9dfad7c.fbdfd",
+        "name": "query",
+        "func": "var lat = msg.payload.content.latitude;\nvar long = msg.payload.content.longitude;\nvar longmin=0;\nvar longmax=0;\nvar latmin = lat - 0.9;\nvar latmax = lat + 0.9;\nif (long > 0){\n    longmin = long - 0.9;\n    longmax = long + 0.9;\n    msg.topic=\"SELECT * FROM gasolineras WHERE LONGITUDE BETWEEN \"+longmin+\" AND \"+longmax+\" AND LATITUDE BETWEEN \"+latmin+\" AND \"+latmax+ \" ORDER BY GASOLEO ASC\";\n}\nelse {\n    longmin = long + 0.9;\n    longmax = long - 0.9;\n    msg.topic=\"SELECT * FROM gasolineras WHERE LONGITUDE BETWEEN \"+longmax+\" AND \"+longmin+\" AND LATITUDE BETWEEN \"+latmin+\" AND \"+latmax+\" ORDER BY GASOLEO ASC\";\n}\nflow.set('coordinates',msg.payload.content);\nflow.set('chatId',msg.payload.chatId);\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 310,
+        "y": 680,
+        "wires": [
+            [
+                "162e3983.35d91e"
+            ]
+        ]
+    },
+    {
+        "id": "77d6b295.3e9494",
+        "type": "link out",
+        "z": "e9dfad7c.fbdfd",
+        "name": "",
+        "links": [
+            "5d6da6a.6fa8358"
+        ],
+        "x": 1335,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "d2e71684.77eb28",
+        "type": "link out",
+        "z": "e9dfad7c.fbdfd",
+        "name": "",
+        "links": [
+            "5d6da6a.6fa8358"
+        ],
+        "x": 1315,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "4ea25744.f2d7",
+        "type": "link out",
+        "z": "e9dfad7c.fbdfd",
+        "name": "",
+        "links": [
+            "c7776396.09ff6"
+        ],
+        "x": 315,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "dc7fbedd.74a2d",
+        "type": "link out",
+        "z": "e9dfad7c.fbdfd",
+        "name": "",
+        "links": [
+            "c7776396.09ff6"
+        ],
+        "x": 295,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "2880003e.0bf62",
+        "type": "link out",
+        "z": "e9dfad7c.fbdfd",
+        "name": "",
+        "links": [
+            "16ea05b2.bf6842"
+        ],
+        "x": 1355,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "b6ecc533.18e47",
+        "type": "link out",
+        "z": "e9dfad7c.fbdfd",
+        "name": "",
+        "links": [
+            "16ea05b2.bf6842"
+        ],
+        "x": 1415,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "82b96bfd.2e192",
+        "type": "comment",
+        "z": "e9dfad7c.fbdfd",
+        "name": "Subflujo para averiguar el país de la petición",
+        "info": "",
+        "x": 744,
+        "y": 556,
+        "wires": []
+    },
+    {
+        "id": "afb8532d.908248",
+        "type": "http request",
+        "z": "87b89ada.268e58",
+        "name": "http",
+        "method": "GET",
+        "ret": "bin",
+        "paytoqs": "ignore",
+        "url": "https://donnees.roulez-eco.fr/opendata/instantane",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 390,
+        "y": 200,
+        "wires": [
+            [
+                "d9232a85.b1cc6"
+            ]
+        ]
+    },
+    {
+        "id": "f3999e75.f5478",
+        "type": "xml",
+        "z": "87b89ada.268e58",
+        "name": "",
+        "property": "payload",
+        "attr": "",
+        "chr": "",
+        "x": 810,
+        "y": 200,
+        "wires": [
+            [
+                "4a5cbea3.0cc76"
+            ]
+        ]
+    },
+    {
+        "id": "d9232a85.b1cc6",
+        "type": "zip",
+        "z": "87b89ada.268e58",
+        "name": "",
+        "mode": "decompress",
+        "filename": "",
+        "outasstring": true,
+        "x": 510,
+        "y": 200,
+        "wires": [
+            [
+                "df57d28a.da64d"
+            ]
+        ]
+    },
+    {
+        "id": "a99e544b.284c7",
+        "type": "split",
+        "z": "87b89ada.268e58",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 1090,
+        "y": 200,
+        "wires": [
+            [
+                "974fe520.acc458"
+            ]
+        ]
+    },
+    {
+        "id": "df57d28a.da64d",
+        "type": "change",
+        "z": "87b89ada.268e58",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload[0].payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 660,
+        "y": 200,
+        "wires": [
+            [
+                "f3999e75.f5478"
+            ]
+        ]
+    },
+    {
+        "id": "4a5cbea3.0cc76",
+        "type": "change",
+        "z": "87b89ada.268e58",
+        "name": "SetPayload",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.pdv_liste.pdv",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 950,
+        "y": 200,
+        "wires": [
+            [
+                "a99e544b.284c7"
+            ]
+        ]
+    },
+    {
+        "id": "a115c0a7.1d1178",
+        "type": "inject",
+        "z": "87b89ada.268e58",
+        "name": "CargaFR",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 200,
+        "wires": [
+            [
+                "afb8532d.908248"
+            ]
+        ]
+    },
+    {
+        "id": "974fe520.acc458",
+        "type": "function",
+        "z": "87b89ada.268e58",
+        "name": "DBRecordPrep",
+        "func": "var gas95=\"0\";\nvar gas98=\"0\";\nvar gasoleo=\"0\";\nvar GLP=\"0\";\nvar GASOLINERA = \"'\"+msg.payload.adresse[0].slice(0,20).replace(/[\"',]/g, \"\").replace(\",\",\"\")+\"'\";\nvar MUNICIPIO = \"'\"+ msg.payload.ville[0].replace(/[\"']/g, \"\").replace(\",\",\"\") +\"'\";\nvar LATITUDE = parseFloat(msg.payload.$.latitude.toString().split(\",\").join(\".\"))/100000;\nvar LONGITUDE = parseFloat(msg.payload.$.longitude.toString().split(\",\").join(\".\"))/100000;\nfunction itera(item,index) {\n    if (msg.payload.prix[index].$.nom==\"Gazole\")\n        {gasoleo=msg.payload.prix[index].$.valeur.toString().split(\",\").join(\".\")}\n    if ((msg.payload.prix[index].$.nom==\"E10\") || (msg.payload.prix[index].$.nom==\"SP95\"))\n        {gas95=msg.payload.prix[index].$.valeur.toString().split(\",\").join(\".\") }\n    if (msg.payload.prix[index].$.nom==\"SP98\")\n        {gas98=msg.payload.prix[index].$.valeur.toString().split(\",\").join(\".\") }\n    }\n    \nif (msg.payload.hasOwnProperty('prix'))\n    {\n    if (msg.payload.prix.length>0)\n        {\n        msg.payload.prix.forEach(itera);\n        msg.topic=\"INSERT INTO gasolineras VALUES (\" + GASOLINERA +\",\"+  MUNICIPIO +\",\"+ LATITUDE +\",\"+ LONGITUDE +\",\"+ gas95 +\",\"+ gas98 +\",\"+ gasoleo+\",\"+ GLP+\")\";   \n        }\n    }\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 1240,
+        "y": 200,
+        "wires": [
+            [
+                "12a149cc.eb46ce"
+            ]
+        ]
+    },
+    {
+        "id": "799f33e0.52942c",
+        "type": "inject",
+        "z": "87b89ada.268e58",
+        "name": "InitDB",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "10",
+        "topic": "CREATE TABLE gasolineras(GASOLINERA TEXT,  MUNICIPIO TEXT, LATITUDE INT, LONGITUDE INT, PRECIO95 INT, PRECIO98 INT, GASOLEO INT, GLP INT)",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 40,
+        "wires": [
+            [
+                "12a149cc.eb46ce"
+            ]
+        ]
+    },
+    {
+        "id": "d4be7dd7.0bf328",
+        "type": "inject",
+        "z": "87b89ada.268e58",
+        "name": "Listar",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "SELECT * FROM gasolineras",
+        "x": 130,
+        "y": 320,
+        "wires": [
+            [
+                "a7620cbc.ca3bb8"
+            ]
+        ]
+    },
+    {
+        "id": "f8f93acb.a050d",
+        "type": "inject",
+        "z": "87b89ada.268e58",
+        "name": "CargaES",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 80,
+        "wires": [
+            [
+                "7e5f8460.63d1d4"
+            ]
+        ]
+    },
+    {
+        "id": "7e5f8460.63d1d4",
+        "type": "http request",
+        "z": "87b89ada.268e58",
+        "name": "GasESP",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 420,
+        "y": 80,
+        "wires": [
+            [
+                "c3be11a.845c2f"
+            ]
+        ]
+    },
+    {
+        "id": "c3be11a.845c2f",
+        "type": "change",
+        "z": "87b89ada.268e58",
+        "name": "ListaEESS",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.ListaEESSPrecio",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 590,
+        "y": 80,
+        "wires": [
+            [
+                "6b249b7a.63a0c4"
+            ]
+        ]
+    },
+    {
+        "id": "6b249b7a.63a0c4",
+        "type": "split",
+        "z": "87b89ada.268e58",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 750,
+        "y": 80,
+        "wires": [
+            [
+                "daf06338.248788"
+            ]
+        ]
+    },
+    {
+        "id": "d9408619.6c8eb",
+        "type": "inject",
+        "z": "87b89ada.268e58",
+        "name": "BorrarTabla",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "DROP TABLE gasolineras",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 380,
+        "wires": [
+            [
+                "a7620cbc.ca3bb8"
+            ]
+        ]
+    },
+    {
+        "id": "b30503ab.310208",
+        "type": "inject",
+        "z": "87b89ada.268e58",
+        "name": "RefreshData",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "21600",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "15",
+        "topic": "DROP TABLE gasolineras",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 140,
+        "wires": [
+            [
+                "a9824453.d64a98"
+            ]
+        ]
+    },
+    {
+        "id": "f2817afe.133cd",
+        "type": "change",
+        "z": "87b89ada.268e58",
+        "name": "InitDB",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "CREATE TABLE gasolineras(GASOLINERA TEXT,  MUNICIPIO TEXT, LATITUDE INT, LONGITUDE INT, PRECIO95 INT, PRECIO98 INT, GASOLEO INT, GLP INT)",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 510,
+        "y": 140,
+        "wires": [
+            [
+                "9b0df53d.6e1e8"
+            ]
+        ]
+    },
+    {
+        "id": "12a149cc.eb46ce",
+        "type": "sqlite",
+        "z": "87b89ada.268e58",
+        "mydb": "8fec3c31.40397",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "gasolineras",
+        "x": 1210,
+        "y": 40,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a7620cbc.ca3bb8",
+        "type": "sqlite",
+        "z": "87b89ada.268e58",
+        "mydb": "8fec3c31.40397",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "gasolineras",
+        "x": 370,
+        "y": 340,
+        "wires": [
+            [
+                "dfb590cd.e0b3b8"
+            ]
+        ]
+    },
+    {
+        "id": "a9824453.d64a98",
+        "type": "sqlite",
+        "z": "87b89ada.268e58",
+        "mydb": "8fec3c31.40397",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "gasolineras",
+        "x": 350,
+        "y": 140,
+        "wires": [
+            [
+                "f2817afe.133cd"
+            ]
+        ]
+    },
+    {
+        "id": "9b0df53d.6e1e8",
+        "type": "sqlite",
+        "z": "87b89ada.268e58",
+        "mydb": "8fec3c31.40397",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "gasolineras",
+        "x": 670,
+        "y": 140,
+        "wires": [
+            [
+                "7e5f8460.63d1d4",
+                "421bfa2.8390c84"
+            ]
+        ]
+    },
+    {
+        "id": "daf06338.248788",
+        "type": "function",
+        "z": "87b89ada.268e58",
+        "name": "DataCleaning",
+        "func": "var ROTULO, GASOLINERA, MUNICIPIO, LATITUDE, LONGITUDE, PRECIO95, PRECIO98, GASOLEO, GLP;\nROTULO = msg.payload[\"Rótulo\"];\nGASOLINERA = \"'\"+ROTULO.slice(0,10).replace(/[\"']/g, \"\")+\"'\";\nMUNICIPIO = \"'\"+ msg.payload.Municipio.replace(/[\"']/g, \"\") +\"'\";\nLATITUDE = parseFloat(msg.payload.Latitud.toString().split(\",\").join(\".\"));\nLONGITUDE = parseFloat(msg.payload[\"Longitud (WGS84)\"].toString().split(\",\").join(\".\"));\nif (msg.payload[\"Precio Gasolina 95 E5\"]===\"\"){\n    PRECIO95=\"0\";\n} else\n    {\n        PRECIO95=msg.payload[\"Precio Gasolina 95 E5\"].toString().split(\",\").join(\".\");\n    }\n\nif (msg.payload[\"Precio Gasolina 98 E5\"]===\"\"){\n    PRECIO98=\"0\";\n} else\n    {\n        PRECIO98=msg.payload[\"Precio Gasolina 98 E5\"].toString().split(\",\").join(\".\");\n    }\n\nif (msg.payload[\"Precio Gasoleo A\"]===\"\")\n{\n    GASOLEO=\"0\";\n} else\n    {\n        GASOLEO=msg.payload[\"Precio Gasoleo A\"].toString().split(\",\").join(\".\");\n    }\nif (msg.payload[\"Precio Gases licuados del petróleo\"]===\"\")\n{\n    GLP=\"0\";\n} else\n    {\n        GLP=msg.payload[\"Precio Gases licuados del petróleo\"].toString().split(\",\").join(\".\");\n    }\n\nmsg.topic=\"INSERT INTO gasolineras VALUES (\" + GASOLINERA +\",\"+  MUNICIPIO +\",\"+ LATITUDE +\",\"+ LONGITUDE +\",\"+ PRECIO95 +\",\"+ PRECIO98 +\",\"+ GASOLEO+\",\"+ GLP+\")\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 980,
+        "y": 80,
+        "wires": [
+            [
+                "12a149cc.eb46ce"
+            ]
+        ]
+    },
+    {
+        "id": "421bfa2.8390c84",
+        "type": "delay",
+        "z": "87b89ada.268e58",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "30",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 870,
+        "y": 140,
+        "wires": [
+            [
+                "afb8532d.908248"
+            ]
+        ]
+    },
+    {
+        "id": "dfb590cd.e0b3b8",
+        "type": "switch",
+        "z": "87b89ada.268e58",
+        "name": "",
+        "property": "payload.length",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gt",
+                "v": "1000",
+                "vt": "num"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 550,
+        "y": 340,
+        "wires": [
+            [
+                "305f4e8c.4f8042"
+            ],
+            [
+                "305f4e8c.4f8042"
+            ]
+        ]
+    },
+    {
+        "id": "305f4e8c.4f8042",
+        "type": "debug",
+        "z": "87b89ada.268e58",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 730,
+        "y": 340,
+        "wires": []
+    }
+]

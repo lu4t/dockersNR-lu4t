@@ -9,8 +9,8 @@ The code in this repository is to provide a starting project for Node-RED, where
 1. using a standard install of Node-RED with the [projects](https://nodered.org/docs/user-guide/projects/) feature enabled, clone a fork of this repository
 2. sustituir el fichero flows.json por un fichero flows.json que incluye los flujos que quiero meter en mi imagen de docker de la app NR. 
 3. lo mismo, con el fichero flows_cred.json 
-4. en el fichero settings.js, actualizamos la dependencias, e incluímos los módulos que van a ser necesarios en los flujos que estan en flows.json.
-4. when you are ready to release it use the Dockerfile in this repository to build your application
+4. en el fichero package.json, actualizamos la dependencias, e incluímos los módulos que van a ser necesarios en los flujos que estan en flows.json.
+5. when you are ready to release it use the Dockerfile in this repository to build your application
 
 See the tutorials [here](https://github.com/binnes/Node-RED-container-prod)
 

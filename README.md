@@ -18,7 +18,8 @@ desde terminal, entro en repos-github. Dentro hay un directorio que se llama NRd
 
         docker run -itd -p 1880:1880 -v /home/lu4t/repos-github/NRdata:/data -e NODE_RED_ENABLE_PROJECTS=true -e TZ=Europe/Madrid --name lu4tNR nodered/node-red
 
-Todos los repos de git que tengan una app de NodeRed, estarán clonados dentro de una carpata llamada projects. Es decir, no hay que clonar desde la raiz de repos-github.
+Todos los repos de git que tengan una app de NodeRed, estarán clonados dentro de una carpata llamada projects. Es decir, no hay que clonar desde la raiz de repos-github, hay que clonar desde dentro de un NodeRed en la opción "projects".
+
 
 ## Como se usa:
 

@@ -1,4 +1,4 @@
-# Node-RED-Docker
+# Como hacer un Container con NodeRED y subirlo a dockerhub.
 
 Plantilla de projecto para correr una app node-red en un docker.
 

@@ -1,5 +1,7 @@
 # Como hacer un Container con NodeRED y subirlo a dockerhub.
 
+Para mantener un proyecto hecho en NodeRed, al estilo de como se haría con visual studio, lo más cómodo es hacerlo desde NodeRed. Esta guia describe cómo se hace:
+
 Plantilla de projecto para correr una app node-red en un docker.
 
 Para hacer un bundle de una app Node-RED completa se necesita: 

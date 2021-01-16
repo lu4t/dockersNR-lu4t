@@ -12,6 +12,14 @@ Para hacer un bundle de una app Node-RED completa se necesita:
 
 The code in this repository is to provide a starting project for Node-RED, where the aim is to run in a production, cloud based environment.  There have been a few modifications over the standard Node-RED released code.
 
+
+## Guia rápida:
+desde terminal, entro en repos-github. Dentro hay un directorio que se llama NRdata. Desde dentro de ese directorio ejecuto:
+
+        docker run -itd -p 1880:1880 -v /home/lu4t/repos-github/NRdata:/data -e NODE_RED_ENABLE_PROJECTS=true -e TZ=Europe/Madrid --name lu4tNR nodered/node-red
+
+Todos los repos de git que tengan una app de NodeRed, estarán clonados dentro de una carpata llamada projects. Es decir, no hay que clonar desde la raiz de repos-github.
+
 ## Como se usa:
 
 los tutoriales de donde sale este paso a paso están: [aquí](https://github.com/binnes/Node-RED-container-prod)

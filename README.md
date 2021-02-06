@@ -77,8 +77,36 @@ porque las hemos incorporado al proyecto. Si hemos hecho fork desde la plantilla
         
         
         
-# Cómo hacer cargar certificados SSL en NODE-RED
+# Cómo hacer para cargar certificados SSL en NODE-RED
+
+El flujo que hace falta está en este repo: https://github.com/inUtil-info/certificatin
+
+Sólo tiene dependencia con un módulo, que no se encuentra en la paleta de NR. Si al arrancar NR no se carga la dependencia, se puede instalar "a mano". Se entra dentro del docker de NR, se abre una shell:
+
+        docker exec -it <nombre-docker> /bin/bash
+
+se ejecuta desde /data:
+
+        npm install bartbutenaers/node-red-contrib-letsencrypt
         
+Una vez cargada esta dependencia, se rearranca el docker (docker stop y despues docker start) y ya se estará disponible.
+
+Una vez disponible, sólo hay que configurar el nodo:
+
+1. se crea una dice qué dominio se quiere registrar. Es un objeto, porque el cliente ACME soporta mandar varios dominios para generar certificados en batch varios host. Incluso se podría mandar un "wildcard" *.inutil.info crearía un certificado válido para cualquier host con dominio inutil.info.
+
+2. se define la ruda donde quieres que te deje los ficheros private-key y certificado. También si quieres que se cree uno nuevo de cada vez, o si quieres que sólo lo pida si no existe uno ya creado.
+
+3. seleccionas el DNS donde está registrado tu dominio: DuckDNS y añades el tocken que le corresponda. Soporta muchos otros DNS.
+
+4. una vez se ha rellenado todo eso, se hace un deploy del flujo. OJO: antes de pulsar en "Create ACME subscriber account", esto se hace despues.
+
+5. Tras haber desplegado el flujo, abro el nodo y ahora si: pulso en "Create ACME subscriber account". En ese momento, el cliente ACME creará la cuenta Let's Encrypt. y cargará el Account key y el Account que le ha devuelto en el nodo.
+
+6. Ahora ya se puede pulsar para que se haga la petición a LE. Si todo ha salido bien, los nodos debug te dirán success, los dos ficheros se habrán creado y estarán en al path indicado antes.
+
+
+Siguiendo las instrucciones de ese repo, está muy bien explicado:        
 https://github.com/bartbutenaers/node-red-contrib-letsencrypt        
         
         

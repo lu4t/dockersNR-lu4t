@@ -41,7 +41,10 @@ los tutoriales de donde sale este paso a paso están: [aquí](https://github.com
 
         docker run -itd -p 1880:1880 -v /home/lu4t/repos-github/NRdata:/data -e NODE_RED_ENABLE_PROJECTS=true -e TZ=Europe/Madrid --name lu4tNR nodered/node-red
 
-8. con el NR corriendo, verificamos que tiene el flujo que queremos "empaquetar" en la app dockerizada. Abrimos http://localhost:1880 y comprobamos.
+8. con el NR corriendo, verificamos que tiene el flujo que queremos "empaquetar" en la app dockerizada. Abrimos http://localhost:1880 y comprobamos que el flujo
+funciona correctamente, *MUCHO OJO Y COMPROBAR LAS DEPENDENCIAS*. En la pestaña de proyectos, revisar que todas los nodos necesarios se han metido en el package.json
+porque las hemos incorporado al proyecto. Si hemos hecho fork desde la plantilla, las dependencias "ocultas" (como la de healthcheck para dockers en la nube) ya estaban incorporadas al package.json de la raiz (no al fichero que hay bajo /projects).
+
 9. activamos la funcion buildx de docker, y activamos la opción de emulador de arquitecturas (permite hacer build de un docker multi-arquitectura).
         
         export DOCKER_CLI_EXPERIMENTAL=enabled

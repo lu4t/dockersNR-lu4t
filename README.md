@@ -73,6 +73,16 @@ porque las hemos incorporado al proyecto. Si hemos hecho fork desde la plantilla
         
          
         
+        
+        
+        
+        
+# Cómo hacer cargar certificados SSL en NODE-RED
+        
+https://github.com/bartbutenaers/node-red-contrib-letsencrypt        
+        
+        
+        
 
 ## Changes from a standard Node-RED install
 

@@ -105,10 +105,11 @@ Una vez disponible, sólo hay que configurar el nodo:
 
 6. Ahora ya se puede pulsar para que se haga la petición a LE. Si todo ha salido bien, los nodos debug te dirán success, los dos ficheros se habrán creado y estarán en al path indicado antes.
 
-
-Siguiendo las instrucciones de ese repo, está muy bien explicado:        
+He seguido las instrucciones de ese repo, está muy bien explicado:        
 https://github.com/bartbutenaers/node-red-contrib-letsencrypt        
         
+
+7. FALTA DOCUMENTAR BIEN LOS CAMBIOS QUE HAY QUE HACER EN NR PARA QUE HAGA USO DE LOS SSL, Y QUE POR DEFECTO ACEPTE SOLO PETICIONES HTTPS. PARA QUE ENCUENTRE LA RUTA A DONDE ESTAN LOS CERTIFICADOS Y COMO SE GESTIONA LA RENOVACION DE LOS CERTS CUANDO VENCEN: https://nodered.org/docs/user-guide/runtime/securing-node-red#enabling-https-access
         
         
 
